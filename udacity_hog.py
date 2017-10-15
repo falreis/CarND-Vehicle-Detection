@@ -38,6 +38,8 @@ def hog_extract_features(imgs, cspace='RGB', orient=9, pix_per_cell=8, cell_per_
                 feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
             elif cspace == 'YCrCb':
                 feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2YCrCb)
+            elif cspace == 'LAB':
+                feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
         else: feature_image = np.copy(image)      
 
         # Call get_hog_features() with vis=False, feature_vec=True

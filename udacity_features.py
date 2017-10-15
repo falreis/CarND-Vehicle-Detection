@@ -42,6 +42,8 @@ def hog_extract_features(imgs, cspace='RGB', orient=9, pix_per_cell=8, cell_per_
                 feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
             elif cspace == 'YCrCb':
                 feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2YCrCb)
+            elif cspace == 'LAB':
+                feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
         else: feature_image = np.copy(image)      
 
         # Call get_hog_features() with vis=False, feature_vec=True
@@ -96,6 +98,8 @@ def color_extract_features(imgs, cspace='RGB', spatial_size=(32, 32), hist_bins=
                 feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
             elif cspace == 'YUV':
                 feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
+            elif cspace == 'LAB':
+                feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
         else:
             feature_image = img.copy()
         
@@ -132,6 +136,8 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
             feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2YUV)
         elif color_space == 'YCrCb':
             feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2YCrCb)
+        elif color_space == 'LAB':
+            feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
     else: feature_image = np.copy(img)      
     #3) Compute spatial features if flag is set
     if spatial_feat == True:
@@ -183,6 +189,8 @@ def extract_features(imgs, color_space='RGB', spatial_size=(32, 32),
                 feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
             elif color_space == 'YCrCb':
                 feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2YCrCb)
+            elif color_space == 'LAB':
+                feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
         else: feature_image = np.copy(image)      
 
         if spatial_feat == True:

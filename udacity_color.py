@@ -34,6 +34,8 @@ def color_extract_features(imgs, cspace='RGB', spatial_size=(32, 32), hist_bins=
                 feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
             elif cspace == 'YUV':
                 feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
+            elif cspace == 'LAB':
+                feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
         else:
             feature_image = img.copy()
         
