@@ -1,9 +1,10 @@
 import numpy as np
 import cv2
+import udacity_features as uf
 
 def slide_window(img, x_start_stop=[None, None], y_start_stop=[None, None], 
                     xy_window=(64, 64), xy_overlap=(0.5, 0.5)):
-# If x and/or y start/stop positions not defined, set to image size
+    # If x and/or y start/stop positions not defined, set to image size
     if x_start_stop[0] == None:
         x_start_stop[0] = 0
     if x_start_stop[1] == None:
@@ -47,22 +48,26 @@ def search_windows(img, windows, clf, scaler, color_space='RGB',
                     pix_per_cell=8, cell_per_block=2, 
                     hog_channel=0, spatial_feat=True, 
                     hist_feat=True, hog_feat=True):
-
     #1) Create an empty list to receive positive detection windows
     on_windows = []
     #2) Iterate over all windows in the list
     for window in windows:
         #3) Extract the test window from original image
-        test_img = cv2.resize(img[window[0][1]:window[1][1], window[0][0]:window[1][0]], (64, 64))      
+        test_img = cv2.resize(img[window[0][1]:window[1][1], window[0][0]:window[1][0]], (64, 64))
+        
         #4) Extract features for that window using single_img_features()
-        features = single_img_features(test_img, color_space=color_space, 
-                            spatial_size=spatial_size, hist_bins=hist_bins, 
-                            orient=orient, pix_per_cell=pix_per_cell, 
-                            cell_per_block=cell_per_block, 
-                            hog_channel=hog_channel, spatial_feat=spatial_feat, 
-                            hist_feat=hist_feat, hog_feat=hog_feat)
+        spatial_features, hist_features, hog_features = uf.single_img_features(test_img, color_space=color_space, 
+                                                            spatial_size=spatial_size, hist_bins=hist_bins, 
+                                                            orient=orient, pix_per_cell=pix_per_cell, 
+                                                            cell_per_block=cell_per_block, 
+                                                            hog_channel=hog_channel, spatial_feat=spatial_feat, 
+                                                            hist_feat=hist_feat, hog_feat=hog_feat)
+
         #5) Scale extracted features to be fed to classifier
-        test_features = scaler.transform(np.array(features).reshape(1, -1))
+        test_stacked = np.hstack((hog_features, spatial_features, hist_features))
+        test_reshaped = test_stacked.reshape(1, -1)
+        test_features = scaler.transform(test_reshaped)
+        
         #6) Predict using your classifier
         prediction = clf.predict(test_features)
         #7) If positive (prediction == 1) then save the window
