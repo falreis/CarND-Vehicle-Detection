@@ -227,11 +227,11 @@ def extract_features(imgs, color_space='RGB', spatial_size=(32, 32),
                     for channel in range(feature_image.shape[2]):
                         hog_features.append(get_hog_features(feature_image[:,:,channel], 
                                             orient, pix_per_cell, cell_per_block, 
-                                            vis=False, feature_vec=True))
+                                            vis=False, feature_vec=True)) #True
                     hog_features = np.ravel(hog_features)        
                 else:
                     hog_features = get_hog_features(feature_image[:,:,hog_channel], orient, 
-                                pix_per_cell, cell_per_block, vis=False, feature_vec=True)
+                                pix_per_cell, cell_per_block, vis=False, feature_vec=True) #True
                 # Append the new feature vector to the features list
                 file_features.append(hog_features)
             features.append(np.concatenate(file_features))
