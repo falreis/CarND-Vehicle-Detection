@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 def add_heat(heatmap, bbox_list):
     # Iterate through list of bboxes
