@@ -109,14 +109,18 @@ To decide the windows sizes and the overlap parameters, I tested some situations
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched known images using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+Ultimately I searched known images using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result. Here are some example images:
 
-![Test Image 1][image4]
-![Test Image 2][image5]
-![Test Image 3][image6]
-![Test Image 4][image7]
-![Test Image 5][image8]
-![Test Image 6][image9]
+![Output Image 1][image10]
+![Output Image 2][image11]
+![Output Image 3][image12]
+![Output Image 4][image13]
+![Output Image 5][image14]
+![Output Image 6][image15]
+
+To optimize the performance of the pipeline, I tuned the parameters of the pipeline, to decrease the number of false positives, that can mislead the algorithm. Also, in the video implementation, I kept previous frames (last 10, for example) in memory and use to find the best bounding box. This procedure, developed in the `pipeline` function, can increase stability of the algorithm and help to reduce false positives, working together with the heatmap filter. 
+
+Other approach that I took was jump some frames (each 3, for example), to reduce the processing time and kept the last bounding box found. As the frames vary a little bit from the next one, because video processing uses like 30 frames/sec, processing the all the frames may produce the same result with much more cost.
 
 ---
 
@@ -128,11 +132,9 @@ Here's a [link to my video result](./output_project_video.mp4)
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
+I recorded the positions of positive detections in each frame of the video. From the positive detections I created a heatmap in the `heatmap` and `heatimg` functions and set the thresholded to identify vehicle positions, and reduce false positives.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap. I then assumed each blob corresponded to a vehicle. I constructed bounding boxes (`heatimg` function) to cover the area of each blob detected.  
 
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
-
-### Here are six frames and their corresponding heatmaps:
+Here are six frames and their corresponding vehicles found and heatmaps:
 
 ![Heatmap Image 1][image16]
 ![Heatmap Image 2][image17]
@@ -141,10 +143,7 @@ Here's an example result showing the heatmap from a series of frames of video, t
 ![Heatmap Image 5][image20]
 ![Heatmap Image 6][image21]
 
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
-
-### Here the resulting bounding boxes are drawn onto the last frame in the series:
+Here the resulting bounding boxes are drawn onto the last frame in the series:
 
 ![Output Image 1][image10]
 ![Output Image 2][image11]
@@ -161,6 +160,25 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
 
-One problem that I faced was the lack of a some images to train the algorithm. One common mistake of the algorithm was to find the left lane line (yellow line) as a vehicle. I think that can mislead the algorithm in some situations. One solution will be create a new training set.
+##### Problems
 
+One problem that I faced was the difficult to ajust the algorithm. Change HOG parameters increase or decrease the performance so far, and combining with different color spaces caused a lot of tests and experiments. Some parameters were better to find white cars and others better to find dark cars. But in both situations, the results cause many false positives. Then I spend so much time to define my best colorspaces (YCrCb and YUV) and change the parameters over this color spaces to find the best option.
+
+Other problem that I faced was the time to process the training set. Using some variation of the HOG parameters, the training time increased a lot, even using AWS CPU or GPU based machines. Using SVC's RBF Kernel, the results were so slow that I prefer to continue with Linear SVC (and RBF had results worse than Linear in my test).
+
+Other problem that I faced was using the KITTI dataset. As said in section 1, the results were worse and the processing time was slower.
+
+One common mistake of the algorithm that I spent a lot of time to solve was discard false positives. The algorithm, for some reason classified several times the left lane line (yellow line) as a vehicle. I don't know if the problem is the training set or the HOG parameters, but happend a lot of time with different parameters. 
+
+To solve the misleading classification, I think that one solution is create a new training set, with more vehicles and try to use different classifications to increase performance.
+
+##### Limitations, Robustness and Future Approachs
+
+One limitation of the algorithm is the difficult to find distant cars. After some distance, the algorithm can't detect the car properly. Also, other difficult of the algorithm is to avoid some false positives. Finnaly, sometimes the algorithm spend some time to identify the car.
+
+To increase the robustness, the algorithm needs to improve far away car detection and solve all false positives, to avoid misleading and cause un unecesssary brake because of the wrong classification.
+
+One future approach is to increase the performance of the algorithm. To process, 50sec of video, the algorithm spent almost 3 minutes, then it can be used in real situations. Some other implementation should be using a faster language (C++ or Python without Jupyter), and review the code.
+
+One possible future approach is to use a Neural Network to classify the images, instead of a Linear Support Vector Machine. Other approach is to use a existent framework, like [YOLO](https://pjreddie.com/darknet/yolo/).
 
