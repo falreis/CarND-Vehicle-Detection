@@ -19,6 +19,19 @@ The goals / steps of this project are the following:
 [image7]: ./test_images/test4.jpg
 [image8]: ./test_images/test5.jpg
 [image9]: ./test_images/test6.jpg
+[image10]: ./output_images/test1.jpg
+[image11]: ./output_images/test2.jpg
+[image12]: ./output_images/test3.jpg
+[image13]: ./output_images/test4.jpg
+[image14]: ./output_images/test5.jpg
+[image15]: ./output_images/test6.jpg
+[image16]: ./writeup/heatmap1.jpg
+[image17]: ./writeup/heatmap2.jpg
+[image18]: ./writeup/heatmap3.jpg
+[image19]: ./writeup/heatmap4.jpg
+[image20]: ./writeup/heatmap5.jpg
+[image21]: ./writeup/heatmap6.jpg
+
 [image10]: ./examples/labels_map.png
 [image11]: ./examples/output_bboxes.png
 [video1]: ./output_project_video.mp4
@@ -113,7 +126,6 @@ Ultimately I searched known images using YCrCb 3-channel HOG features plus spati
 
 Here's a [link to my video result](./output_project_video.mp4)
 
-
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
@@ -122,13 +134,24 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 ### Here are six frames and their corresponding heatmaps:
 
-![alt text][image5]
+![Heatmap Image 1][image16]
+![Heatmap Image 2][image17]
+![Heatmap Image 3][image18]
+![Heatmap Image 4][image19]
+![Heatmap Image 5][image20]
+![Heatmap Image 6][image21]
 
 ### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
 ![alt text][image6]
 
 ### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
+
+![Output Image 1][image10]
+![Output Image 2][image11]
+![Output Image 3][image12]
+![Output Image 4][image13]
+![Output Image 5][image14]
+![Output Image 6][image15]
 
 ---
 
