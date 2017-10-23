@@ -83,13 +83,13 @@ Test Accuracy of SVC =  0.9891
 
 I tried several combinations of parameters. I noticed that some parameters were better using `YCrCb` and `YUV` color spaces, combined or separatelly. Other colors spaces like `HSV`, `LUV`, `RGB` and `HLS` color spaces had a lot of false positives then it wasn't a good choice. Using all different color spaces, I tried a lot of differents values for Hog parameters and Hog channels, but the results also generated a lot of false positives.
 
-Using `YUV`, the results were good but I think that I had some difficults with the adjust of the threshold of the heatmap. `YCrCb` color space resulted in more consistent results than `YUV`. Mixing both of color spaces, the results not improved so much, and the speed of the algorithm decrease due the add of a new color space and extra hog processment.
+Using `YUV`, the results were good but I think that I had some difficults to adjust the threshold of the heatmap. `YCrCb` color space resulted in more consistent results than `YUV`. Mixing both of color spaces, the results not improved so much, and the speed of the algorithm decrease due the add of a new color space and extra HOG processment.
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using only all GTI images, as I said in section 1. The training procedure [IPython notebook](./code.ipynb), in the section *Training Set* and also in the function `train_pipeline`, in the functions section.
+I trained a linear SVM using only all GTI images, as I said in section 1. The training procedure is available in [IPython notebook](./code.ipynb), in the section *Training Set* and also in the function `train_pipeline` and `read_dataset`, in the functions section.
 
-In this section, the function `train_pipeline` receive the names of the color spaces that I want to train. This procedures increased the speed of my test, because I can put some color spaces to run and get a moment after to get the result, as training procedure is slow.
+In *Helper Functions* section, the function `train_pipeline` receive the names of the color spaces that I want to train. This procedures increased the speed of my tests, because I can put some color spaces to run and get the results after a moment, once the training procedure is slow.
 
 One of the main procedure call in the `train_pipeline` function is the procedure `extract_features` (code available in *udacity_features.py*), that reads the dataset and returns the processing sets to be training using the Linear SVC. In this procedure, I used HOG, Spatial and Color Features to compose the features used in the training procedure.
 
@@ -99,13 +99,13 @@ Other approach that I tried, but it hadn't so much success was using a different
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search known images over the pictures using different windows sizes. I choosed this approach due the scale transformation over 2D images into 3D images (real). In 2D images, far away objects is smaller than near objects (perspective). 
+I decided to search known images over the pictures using different windows sizes. I choosed this approach due the scale transformation over 3D views into 2D images. In 2D images, far away objects is smaller than near objects (perspective). 
 
 I did one loop increasing the window size each step and finding the vehicles in different positions. Firstly, I searched small vehicles over the top of my region of interests, thinking if they were far away, they will be small from the car perspective. In the next loop, I increased the window size and searched again, starting at the top position, but trying to find big vehicles. I did the same procedure with different windows sizes, trying to find nearby vehicles.
 
 The code for this procedure described in the last 2 paragraph is available in `window_pipeline` function, inside [IPython notebook](./code.ipynb) file.
 
-To decide the windows sizes and the overlap parameters, I tested some situations and tuned the values. To overlap parameters, I tried different values with my previous tests and after the first test with the final HOG parameters, I just adjust a little bit for an good value.
+To decide the windows sizes and the overlap parameters, I tested some situations and tuned the parameters. To the *overlap* parameter, I tried different values in my previous tests and after the first test with the my final HOG approach, I just adjust a little bit for a good number, to tune the algorithm.
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
@@ -134,7 +134,7 @@ Here's a [link to my video result](./output_project_video.mp4)
 
 I recorded the positions of positive detections in each frame of the video. From the positive detections I created a heatmap in the `heatmap` and `heatimg` functions and set the thresholded to identify vehicle positions, and reduce false positives.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap. I then assumed each blob corresponded to a vehicle. I constructed bounding boxes (`heatimg` function) to cover the area of each blob detected.  
 
-Here are six frames and their corresponding vehicles found and heatmaps:
+Here are six test images and their corresponding vehicles found and heatmaps:
 
 ![Heatmap Image 1][image16]
 ![Heatmap Image 2][image17]
@@ -162,13 +162,13 @@ Here I'll talk about the approach I took, what techniques I used, what worked an
 
 ##### Problems
 
-One problem that I faced was the difficult to ajust the algorithm. Change HOG parameters increase or decrease the performance so far, and combining with different color spaces caused a lot of tests and experiments. Some parameters were better to find white cars and others better to find dark cars. But in both situations, the results cause many false positives. Then I spend so much time to define my best colorspaces (YCrCb and YUV) and change the parameters over this color spaces to find the best option.
+One problem that I faced was the difficult to ajust the algorithm. Change HOG parameters increase or decrease the performance so far, and combining with different color spaces caused a lot of tests and experiments. Some parameters were better to find white cars and others better to find dark cars. But in both situations, the results cause many false positives. Then I spend so much time to define my best colorspaces (YCrCb and YUV) and tune the parameters over this color spaces to find the best option.
 
-Other problem that I faced was the time to process the training set. Using some variation of the HOG parameters, the training time increased a lot, even using AWS CPU or GPU based machines. Using SVC's RBF Kernel, the results were so slow that I prefer to continue with Linear SVC (and RBF had results worse than Linear in my test).
+Other problem that I faced was the time to process the training set. Using some variation of the HOG parameters, the training time increased a lot, even using AWS CPU or GPU based machines. Using SVC's RBF Kernel, the results were so slow that I prefer to continue with Linear SVC.
 
 Other problem that I faced was using the KITTI dataset. As said in section 1, the results were worse and the processing time was slower.
 
-One common mistake of the algorithm that I spent a lot of time to solve was discard false positives. The algorithm, for some reason classified several times the left lane line (yellow line) as a vehicle. I don't know if the problem is the training set or the HOG parameters, but happend a lot of time with different parameters. 
+One common mistake of the algorithm that I spent a lot of time to solve was discard false positives. The algorithm, for some reason classified for several times the left lane line (yellow line) as a vehicle. I don't know if the problem is in the training set or the HOG parameters, but happend a lot of time with different parameters. 
 
 To solve the misleading classification, I think that one solution is create a new training set, with more vehicles and try to use different classifications to increase performance.
 
@@ -178,7 +178,7 @@ One limitation of the algorithm is the difficult to find distant cars. After som
 
 To increase the robustness, the algorithm needs to improve far away car detection and solve all false positives, to avoid misleading and cause un unecesssary brake because of the wrong classification.
 
-One future approach is to increase the performance of the algorithm. To process, 50sec of video, the algorithm spent almost 3 minutes, then it can be used in real situations. Some other implementation should be using a faster language (C++ or Python without Jupyter), and review the code.
+One future approach is to increase the performance of the algorithm. To process 50sec of video, the algorithm spent almost 3 minutes, then it can be used in real situations. Other implementation should be using a faster language (C++ or Python without Jupyter), and review the code, to remove unecessary step or increase the software performance.
 
 One possible future approach is to use a Neural Network to classify the images, instead of a Linear Support Vector Machine. Other approach is to use a existent framework, like [YOLO](https://pjreddie.com/darknet/yolo/).
 
