@@ -25,12 +25,12 @@ The goals / steps of this project are the following:
 [image13]: ./writeup/output4.jpg
 [image14]: ./writeup/output5.jpg
 [image15]: ./writeup/output6.jpg
-[image16]: ./writeup/heatmap1.jpg
-[image17]: ./writeup/heatmap2.jpg
-[image18]: ./writeup/heatmap3.jpg
-[image19]: ./writeup/heatmap4.jpg
-[image20]: ./writeup/heatmap5.jpg
-[image21]: ./writeup/heatmap6.jpg
+[image16]: ./writeup/heatmap1.png
+[image17]: ./writeup/heatmap2.png
+[image18]: ./writeup/heatmap3.png
+[image19]: ./writeup/heatmap4.png
+[image20]: ./writeup/heatmap5.png
+[image21]: ./writeup/heatmap6.png
 
 [image10]: ./examples/labels_map.png
 [image11]: ./examples/output_bboxes.png
