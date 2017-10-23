@@ -19,12 +19,12 @@ The goals / steps of this project are the following:
 [image7]: ./test_images/test4.jpg
 [image8]: ./test_images/test5.jpg
 [image9]: ./test_images/test6.jpg
-[image10]: ./output_images/test1.jpg
-[image11]: ./output_images/test2.jpg
-[image12]: ./output_images/test3.jpg
-[image13]: ./output_images/test4.jpg
-[image14]: ./output_images/test5.jpg
-[image15]: ./output_images/test6.jpg
+[image10]: ./writeup/output1.jpg
+[image11]: ./writeup/output2.jpg
+[image12]: ./writeup/output3.jpg
+[image13]: ./writeup/output4.jpg
+[image14]: ./writeup/output5.jpg
+[image15]: ./writeup/output6.jpg
 [image16]: ./writeup/heatmap1.jpg
 [image17]: ./writeup/heatmap2.jpg
 [image18]: ./writeup/heatmap3.jpg
@@ -69,11 +69,11 @@ Exploring some parameters, after some tests in image test set, I realized that t
 YCrCb Color: (orient: 10, cell_per_block:0) 
 1.23 Seconds to train SVC...
 Test Accuracy of SVC =  0.9487
-----
+-
 YCrCb Color: (orient: 10, cell_per_block:1) 
 4.42 Seconds to train SVC...
 Test Accuracy of SVC =  0.9929
-----
+-
 YCrCb Color: (orient: 10, cell_per_block:2) 
 12.49 Seconds to train SVC...
 Test Accuracy of SVC =  0.9891
